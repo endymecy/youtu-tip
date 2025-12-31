@@ -2,6 +2,7 @@
 
 <p align="center">
 <a href="README.md"><b>English</b></a>
+| <a href="https://tencentcloudadp.github.io/youtu-tip/"><b>主页</b></a>
 | <a href="#tip-是什么"><b>Tip 简介</b></a>
 | <a href="#怎样使用-tip"><b>使用指南</b></a>
 | <a href="#tip-的更多技巧"><b>更多技巧</b></a>
