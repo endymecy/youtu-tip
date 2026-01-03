@@ -15,7 +15,7 @@ Tip is a proactive on-device AI assistant that intelligently understands your cu
 
 Tip is powered by a series of self-developed lightweight models:
 - Youtu-LLM: A compact 1.96B model with powerful native agent capabilities.
-  > [🤗 Model](https://huggingface.co/collections/tencent/youtu) | [📑 Technical Report](youtu-llm/assets/Youtu-LLM_Technical_Report.pdf) | [🚀 Quick Start Guide](youtu-llm/README.md)
+  > [🤗 Model](https://huggingface.co/collections/tencent/youtu) | [📑 Technical Report]([youtu-llm/assets/Youtu-LLM_Technical_Report.pdf](https://arxiv.org/pdf/2512.24618)) | [🚀 Quick Start Guide](youtu-llm/README.md)
 - Youtu-VL: 4B on-device multimodal large model, comprehensive visual perception capability (soon to be open source)
 
 You are also free to swap out the model for any alternative you prefer.
