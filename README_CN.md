@@ -14,7 +14,7 @@ Tip 是一个主动式端侧AI助手，一键调用，智能地理解您当前�
 
 Tip 由自研的一系列轻量级模型驱动：
 - Youtu-LLM：1.96B 的小巧大模型，强悍原生智能体能力。
-  > [🤗 模型](https://huggingface.co/collections/tencent/youtu) | [📑 技术报告](youtu-llm/assets/Youtu-LLM_Technical_Report.pdf) | [🚀 快速入门](youtu-llm/README_CN.md)
+  > [🤗 模型](https://huggingface.co/collections/tencent/youtu) | [📑 技术报告](https://arxiv.org/pdf/2512.24618) | [🚀 快速入门](youtu-llm/README_CN.md)
 - Youtu-VL: 4B 端侧多模态大模型，全面视觉感知能力（即将开源）
 
 
