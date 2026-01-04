@@ -116,6 +116,22 @@ We also support the standard OpenAI SDK entry. You can use any online provider o
 3. Save, then connect it in “Settings - General.”
 
 
+#### Capability Description
+
+Due to the limited number of parameters, edge models have relatively limited performance. They may not be able to complete some tasks, and the accuracy of their output text may be lower compared to larger models. We provide a simple introductory table to easily distinguish the current capabilities of the edge model:
+
+| Task Name | Specific Example | Edge Model | Large Model |
+| --- | --- | --- | --- |
+| Search Content | “Search xxx on this page” | ✅ | ✅ |
+| Simple Visual Location | “Click the xxx button and enter xxx” | ✅ | ✅ |
+| Single-Step Logic Task | “Fill out a form” | ❌ | ✅ |
+| Multi-Step Reasoning Planning | “Search for flight tickets and compare prices” | ❌ | ✅ |
+| Cross-Application Collaboration | “Copy content from application xx to application xx” | ❌ | ✅ |
+| Anomaly Self-Correction | “Retry when an error is encountered” | ✅ | ✅ |
+
+If you encounter a problem that the edge model cannot solve, we recommend deploying a model with a larger number of parameters and a trusted access point to improve the user experience.
+
+
 ## Local development
 
 The full source code and architecture are open. You can develop and package locally to customize any feature. See: [README](youtu-tip/README.md)
