@@ -247,3 +247,19 @@ vllm serve <model_path> --trust-remote-code
 ```bash
 --enable-auto-tool-choice --tool-call-parser hermes
 ```
+
+## 📚 Citation
+
+如果本工作对您有帮助，希望您引用我们的文章:
+
+```bibtex
+@article{youtu-llm,
+  title={Youtu-LLM: Unlocking the Native Agentic Potential for Lightweight Large Language Models},
+  author={Tencent Youtu Lab},
+  year={2025},
+  eprint={2512.24618},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL},
+  url={https://arxiv.org/abs/2512.24618}, 
+}
+```
