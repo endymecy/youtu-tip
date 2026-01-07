@@ -121,11 +121,13 @@ Youtu-LLM的主要贡献如下:
 确保您的 Python 环境已安装 `transformers` 库，且版本符合要求。
 
 ```bash
-pip install "transformers>=4.56" torch accelerate
+pip install "transformers>=4.56.0,<=4.57.1" torch accelerate
 
 ```
-
----
+> **Note**
+> - (1) 当前remote文件适配的transformers版本为：pip install "transformers>=4.56.0,<=4.57.1";
+> - (2) 请勿使用transformers==4.57.2，因为该版本存在一个[未修复的重大bug](https://github.com/huggingface/transformers/issues/42395);
+> - (3) 如果您想使用更高的transformers版本 (例如4.57.3)，请对modeling_youtu.py做轻量修改，即将"[check_model_inputs](https://huggingface.co/tencent/Youtu-LLM-2B/blob/main/modeling_youtu.py#L474)"改为"check_model_inputs()"。这一修改遵循[patch](https://github.com/huggingface/transformers/commit/ede92a8755e48da7ae1d1b7d976ad581aa5c8327#diff-00deeb775525887b5d4f029e8084dd85737e561d4e2606ec8b4787f55d6cf286).
 
 ### 2. 核心代码示例
 
@@ -133,13 +135,12 @@ pip install "transformers>=4.56" torch accelerate
 
 ```python
 import re
-import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-# 1. 配置模型
+# 1. Configure Model
 model_id = "tencent/Youtu-LLM-2B"
 
-# 2. 初始化 Tokenizer 和模型
+# 2. Initialize Tokenizer and Model
 tokenizer = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True)
 model = AutoModelForCausalLM.from_pretrained(
     model_id,
@@ -147,34 +148,38 @@ model = AutoModelForCausalLM.from_pretrained(
     trust_remote_code=True
 )
 
-# 3. 构建对话输入
-prompt = "您好"
+# 3. Construct Dialogue Input
+prompt = "Hello"
 messages = [{"role": "user", "content": prompt}]
 
-# 使用 apply_chat_template 构造输入，enable_thinking=True 开启思考模式
-input_ids = tokenizer.apply_chat_template(
-    messages, 
-    tokenize=True, 
-    add_generation_prompt=True, 
-    return_tensors="pt",
+# Use apply_chat_template to construct input; set enable_thinking=True to activate Reasoning Mode
+input_text = tokenizer.apply_chat_template(
+    messages,
+    tokenize=False,
+    add_generation_prompt=True,
     enable_thinking=True
-).to(model.device)
+)
 
-# 4. 生成回复
+model_inputs = tokenizer([input_text], return_tensors="pt").to(model.device)
+print("Input prepared. Starting generation...")
+
+# 4. Generate Response
 outputs = model.generate(
-    input_ids,
+    **model_inputs,
     max_new_tokens=512,
     do_sample=True,
     temperature=1.0,
+    top_k=20,
     top_p=0.95,
     repetition_penalty=1.05
 )
+print("Generation complete!")
 
-# 5. 解析结果
+# 5. Parse Results
 full_response = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
 def parse_reasoning(text):
-    """提取 <think> 标签内的思考过程与之后的回答内容"""
+    """Extract thought process within <think> tags and the subsequent answer content"""
     thought_pattern = r"<think>(.*?)</think>"
     match = re.search(thought_pattern, text, re.DOTALL)
     
@@ -182,18 +187,15 @@ def parse_reasoning(text):
         thought = match.group(1).strip()
         answer = text.split("</think>")[-1].strip()
     else:
-        thought = "（未产生显式思考过程）"
+        thought = "(No explicit thought process generated)"
         answer = text
     return thought, answer
 
 thought, final_answer = parse_reasoning(full_response)
 
-print(f"\n{'='*20} 思考过程 {'='*20}\n{thought}")
-print(f"\n{'='*20} 最终回答 {'='*20}\n{final_answer}")
-
+print(f"\n{'='*20} Thought Process {'='*20}\n{thought}")
+print(f"\n{'='*20} Final Answer {'='*20}\n{final_answer}")
 ```
-
----
 
 ### 3. 关键配置说明
 
@@ -217,8 +219,6 @@ print(f"\n{'='*20} 最终回答 {'='*20}\n{final_answer}")
 | `repetition_penalty` | 1.05 | - |
 
 > **提示**：在使用思考模式时，较高的 `temperature` 有助于模型进行更深层的发散性思考。
-
----
 
 ### 4. vLLM 部署
 
